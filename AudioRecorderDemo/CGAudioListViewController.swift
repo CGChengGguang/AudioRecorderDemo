@@ -52,6 +52,7 @@ class CGAudioListViewController: UIViewController,UITableViewDataSource,UITableV
 
         // UI
         self.title = "我的录音";
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.red];        
         self.tableView.register(CGAudioListTableViewCell.self, forCellReuseIdentifier: cellReuseIdentity);
         self.tableView.tableFooterView = UIView();
         self.tableView.delegate = self;

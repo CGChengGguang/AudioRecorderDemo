@@ -84,29 +84,6 @@ class CGMainViewController: UIViewController {
         let vc = CGAudioListViewController();
         self.navigationController?.pushViewController(vc, animated: true);
     }
-    
-    // util
-    func rightBarButtonItemWithTitle(_ title:String) -> UIBarButtonItem {
-        
-        let button = UIButton();
-        button.addTarget(self, action: #selector(rightBarItemClicked), for: UIControlEvents.touchUpInside);
-        button.setTitle(title, for: UIControlState.normal);
-        button.setTitleColor(UIColor.red, for: UIControlState.normal);
-        button.bounds = CGRect.init(x: 0, y: 0, width: 60, height: 30);
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14);
-        return UIBarButtonItem.init(customView: button);
-    }
-    
-    func titleBarItemWithTitle(_ title:String) -> UIView {
-        
-        let lab = UILabel.init(frame: CGRect.init(x: 0, y: 0, width: 100, height: 30));
-        lab.text = title;
-        lab.textColor = UIColor.red;
-        lab.font = UIFont.systemFont(ofSize: 16);
-        lab.textAlignment = NSTextAlignment.center;
-        return lab;
-    }
-
 }
 
 extension CGMainViewController {
@@ -144,8 +121,8 @@ extension CGMainViewController {
     func setupSubviews() {
         //
         self.title = "添加录音";
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = self.rightBarButtonItemWithTitle("我的录音");
-        navigationController?.navigationBar.topItem?.titleView = self.titleBarItemWithTitle("添加录音");
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "我的录音", style: UIBarButtonItemStyle.plain, target: self, action: #selector(rightBarItemClicked));
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.red];
         //
         playBtn.translatesAutoresizingMaskIntoConstraints = false;
         recorderBtn.translatesAutoresizingMaskIntoConstraints = false;
