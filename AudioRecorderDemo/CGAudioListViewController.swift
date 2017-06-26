@@ -27,7 +27,7 @@ class CGAudioListTableCellData: NSObject {
     }
 }
 
-class CGAudioListViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,AVAudioPlayerDelegate {
+class CGAudioListViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,AVAudioPlayerDelegate,CGAudioListCellDelegate {
     //
     var audioPlayer:AVAudioPlayer!
     let cellReuseIdentity = "CGVoiceDataListCell"
@@ -70,7 +70,7 @@ class CGAudioListViewController: UIViewController,UITableViewDataSource,UITableV
     }
     
     // action
-    func playAudioDataAtIndexPath(_ indexPath:IndexPath) {
+    func selectedAudioDataAtIndexPath(_ indexPath:IndexPath) {
         let cellData = tableData[indexPath.row];
         let playing = cellData.isPlaying;
         cellData.isPlaying = !cellData.isPlaying;
@@ -91,6 +91,7 @@ class CGAudioListViewController: UIViewController,UITableViewDataSource,UITableV
             audioPlayer.play();
             audioPlayer.delegate = self;
             if self.playingIndex != nil {
+                // 新选择一条 停止另一条
                 self.playingStopedAtIndexPath(self.playingIndex);
             }
             self.playingIndex = indexPath;
@@ -105,6 +106,11 @@ class CGAudioListViewController: UIViewController,UITableViewDataSource,UITableV
         tableView.reloadData();
     }
     
+    func playBtnClickedOnCell(_ cell:CGAudioListTableViewCell) {
+        let indexPath = tableView.indexPath(for: cell);
+        self.selectedAudioDataAtIndexPath(indexPath!);
+    }
+    
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.playingStopedAtIndexPath(self.playingIndex);
     }
@@ -117,12 +123,16 @@ class CGAudioListViewController: UIViewController,UITableViewDataSource,UITableV
         let cell = self.tableView.dequeueReusableCell(withIdentifier: cellReuseIdentity) as! CGAudioListTableViewCell;
         let cellData = tableData[indexPath.row];
         cell.bindData(cellData);
+        cell.delegate = self;
         return cell;
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true);
-        self.playAudioDataAtIndexPath(indexPath);
+        let cellData = tableData[indexPath.row];
+        if cellData.isPlaying {
+            self.selectedAudioDataAtIndexPath(indexPath);
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
