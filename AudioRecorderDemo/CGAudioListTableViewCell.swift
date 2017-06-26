@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol CGAudioListCellDelegate {
+protocol CGAudioListCellDelegate:NSObjectProtocol {
     func playBtnClickedOnCell(_ cell:CGAudioListTableViewCell)
 }
 
 class CGAudioListTableViewCell: UITableViewCell {
     
-    var delegate : CGAudioListCellDelegate?
+    weak var delegate : CGAudioListCellDelegate?
     let playingFlagBtn = UIButton()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
