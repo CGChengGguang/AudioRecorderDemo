@@ -13,6 +13,9 @@ class CGAudioDataManager: NSObject {
     
     static let sharedInstance = CGAudioDataManager()
 
+    private override init() {
+    }
+    
     func getContext () -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
